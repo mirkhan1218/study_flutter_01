@@ -30,6 +30,7 @@ class CommonLayout extends GetView<CommonLayoutController> {
               resizeToAvoidBottomInset: false,
               appBar: appBar,
               backgroundColor: const Color(0xff212123),
+              body: useSafeArea ? SafeArea(child: body) : body,
               bottomNavigationBar: bottomNavBar ?? const SizedBox(height: 1),
               floatingActionButton: floatingActionButton,
             ),

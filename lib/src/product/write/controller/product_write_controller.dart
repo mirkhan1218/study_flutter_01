@@ -125,6 +125,7 @@ class ProductWriteController extends GetxController {
         updatedAt: DateTime.now(),
       ),
     );
+
     var savedId = await _productRepository.saveProduct(product.value.toMap());
 
     CommonLayoutController.to.loading(false);

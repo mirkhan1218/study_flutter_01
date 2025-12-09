@@ -18,17 +18,19 @@ class ProductRepository extends GetxService {
     }
   }
 
-  Future<({List<Product> list, QueryDocumentSnapshot<
-      Object?>? lastItem})> getProducts() async {
+  Future<({List<Product> list, QueryDocumentSnapshot<Object?>? lastItem})>
+  getProducts() async {
     try {
       QuerySnapshot<Object?> snapshot = await products.get();
       if (snapshot.docs.isNotEmpty) {
         return (
-        list: snapshot.docs.map<Product>((product) {
-          return Product.fromJson(
-              product.id, product.data() as Map<String, dynamic>);
-        }).toList(),
-        lastItem: snapshot.docs.last
+          list: snapshot.docs.map<Product>((product) {
+            return Product.fromJson(
+              product.id,
+              product.data() as Map<String, dynamic>,
+            );
+          }).toList(),
+          lastItem: snapshot.docs.last,
         );
       }
       return (list: <Product>[], lastItem: null);

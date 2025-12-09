@@ -40,7 +40,7 @@ class Product extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'owner': owner,
+      'owner': owner!.toJson(),
       'title': title,
       'description': description,
       'productPrice': productPrice,
