@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "117342808274",
+    "project_id": "bamtol-market-app-mirkhan",
+    "storage_bucket": "bamtol-market-app-mirkhan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117342808274:android:a5586bc1050924927fa50b",
+        "android_client_info": {
+          "package_name": "com.example.cloneapp.bamtol_market_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117342808274-00ehp2j04t9g824n95qpicc6al2587vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cloneapp.bamtol_market_app",
+            "certificate_hash": "d5f7466088aee0c98767220adbb191081837014e"
+          }
+        },
+        {
+          "client_id": "117342808274-s33gostaa05e1ph29vkckhlc3oog8glk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5OmsEPYJIHRAMf8CoK5WfJ6yq-2kWWzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117342808274-s33gostaa05e1ph29vkckhlc3oog8glk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "117342808274-felbu9ftohpcpgq7fetqltg80nhh3b7m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cloneapp.bamtolMarketApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
