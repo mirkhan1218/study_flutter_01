@@ -1,9 +1,13 @@
 import 'package:bamtol_market_app/src/common/components/app_font.dart';
+import 'package:bamtol_market_app/src/common/components/price_view.dart';
+import 'package:bamtol_market_app/src/common/enum/market_enum.dart';
 import 'package:bamtol_market_app/src/common/layout/common_layout.dart';
+import 'package:bamtol_market_app/src/common/model/product.dart';
 import 'package:bamtol_market_app/src/home/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -40,7 +44,10 @@ class HomePage extends StatelessWidget {
       body: const _ProductList(),
       floatingActionButton: GestureDetector(
         onTap: () async {
-          await Get.toNamed('/product/write');
+          var isNeedRefresh = await Get.toNamed('/product/write');
+          if (isNeedRefresh is bool && isNeedRefresh) {
+            Get.find<HomeController>().refresh();
+          }
         },
         behavior: HitTestBehavior.translucent,
         child: Row(
@@ -70,7 +77,25 @@ class HomePage extends StatelessWidget {
 class _ProductList extends GetView<HomeController> {
   const _ProductList({super.key});
 
-  Widget _productOne(int index) {
+  Widget subInfo(Product product) {
+    return Row(
+      children: [
+        AppFont(
+          product.owner?.nickname ?? '',
+          color: const Color(0xff878B93),
+          size: 12,
+        ),
+        const AppFont(' · ', color: const Color(0xff878B93), size: 12),
+        AppFont(
+          DateFormat('yyyy.MM.dd').format(product.createdAt!),
+          color: const Color(0xff878B93),
+          size: 12,
+        ),
+      ],
+    );
+  }
+
+  Widget _productOne(Product product) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,7 +105,7 @@ class _ProductList extends GetView<HomeController> {
             width: 100,
             height: 100,
             child: Image.network(
-              'https://cdn.kgmaeil.net/news/photo/202007/245825_49825_2217.jpg',
+              product.imageUrls?.first ?? '',
               fit: BoxFit.cover,
             ),
           ),
@@ -91,23 +116,13 @@ class _ProductList extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 10),
-              AppFont(
-                'Yaamj 상품$index 무료로 드려요 :)',
-                color: Colors.white,
-                size: 16,
-              ),
+              AppFont(product.title ?? '', color: Colors.white, size: 16),
               const SizedBox(height: 5),
-              const AppFont(
-                '프리뷰 · 2025.12.08',
-                color: Color(0xff878B93),
-                size: 12,
-              ),
+              subInfo(product),
               const SizedBox(height: 5),
-              const Row(
-                children: [
-                  AppFont('나눔', size: 14, fontWeight: FontWeight.bold),
-                  AppFont('🧡', size: 16),
-                ],
+              PriceView(
+                price: product.productPrice ?? 0,
+                status: product.status ?? ProductStatusType.sale,
               ),
             ],
           ),
@@ -119,15 +134,21 @@ class _ProductList extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => ListView.separated(
+        controller: controller.scrollController,
         padding: const EdgeInsets.only(left: 25.0, top: 20, right: 25),
         itemBuilder: (context, index) {
-          return _productOne(index);
+          if (index == controller.productList.length) {
+            return controller.searchOption.lastItem != null
+                ? const Center(child: CircularProgressIndicator(strokeWidth: 1))
+                : Container();
+          }
+          return _productOne(controller.productList[index]);
         },
         separatorBuilder: (context, index) => const Padding(
           padding: EdgeInsets.symmetric(vertical: 10.0),
           child: Divider(color: Color(0xff3C3C3E)),
         ),
-        itemCount: controller.productList.length,
+        itemCount: controller.productList.length + 1,
       ),
     );
   }

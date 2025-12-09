@@ -1,4 +1,5 @@
 import 'package:bamtol_market_app/src/common/model/product.dart';
+import 'package:bamtol_market_app/src/common/model/product_search_option.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
@@ -19,9 +20,20 @@ class ProductRepository extends GetxService {
   }
 
   Future<({List<Product> list, QueryDocumentSnapshot<Object?>? lastItem})>
-  getProducts() async {
+  getProducts(ProductSearchOption searchOption) async {
     try {
-      QuerySnapshot<Object?> snapshot = await products.get();
+      Query<Object?> query = searchOption.toQuery(products);
+      QuerySnapshot<Object?> snapshot;
+
+      if (searchOption.lastItem == null) {
+        snapshot = await query.limit(7).get();
+      } else {
+        snapshot = await query
+            .startAfterDocument(searchOption.lastItem!)
+            .limit(7)
+            .get();
+      }
+
       if (snapshot.docs.isNotEmpty) {
         return (
           list: snapshot.docs.map<Product>((product) {
